@@ -13,7 +13,7 @@ extension RouterProtocol {
                 if request.url.path.last == "/" {
                     return try notFoundHandler(request)
                 }
-                let file = try File(string: basePath + request.url.path)
+                let file = try File(at: basePath + request.url.path)
                 guard file.isExists else {
                     return try notFoundHandler(request)
                 }
