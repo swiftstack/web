@@ -29,7 +29,7 @@ let package = Package(
             dependencies: ["MVC", "AIO", "Log"]),
         .target(
             name: "MVC",
-            dependencies: ["HTTP", "Crypto"]),
+            dependencies: ["HTTP", "SHA1", "UUID"]),
         .testTarget(
             name: "WebTests",
             dependencies: ["Web", "Test"]),
