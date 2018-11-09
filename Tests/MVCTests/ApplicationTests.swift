@@ -30,4 +30,26 @@ class ApplicationTests: TestCase {
             assertEqual(response.status, .ok)
         }
     }
+
+    func testConvenienceAPI() {
+        final class TestController: Controller, Inject {
+            static func setup(router: MVC.Router<TestController>) throws {
+                router.route(get: "/test", to: handler)
+            }
+            
+            func handler() -> String {
+                return "ok"
+            }
+        }
+
+        scope {
+            let application = HTTP.Application(basePath: "/api")
+            try application.addApplication(basePath: "/v1") { v1 in
+                try v1.addController(TestController.self)
+            }
+            let request = Request(url: "/api/v1/test", method: .get)
+            let response = try application.process(request)
+            assertEqual(response.status, .ok)
+        }
+    }
 }

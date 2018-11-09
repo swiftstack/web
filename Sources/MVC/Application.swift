@@ -84,3 +84,17 @@ extension RouterProtocol {
         }
     }
 }
+
+extension RouterProtocol {
+    public func addApplication(
+        basePath: String = "", 
+        middleware: [Middleware.Type] = [],
+        configure: (MVC.Application) throws -> Void) rethrows
+    {
+        let application = MVC.Application(
+            basePath: basePath, 
+            middleware: middleware)
+        try configure(application)
+        addApplication(application)
+    }
+}
