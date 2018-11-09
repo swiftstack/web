@@ -71,6 +71,24 @@ extension Application {
                 handler: route.handler)
         }
     }
+
+    public func addApplication(
+        basePath: String = "", 
+        middleware: [Middleware.Type] = [],
+        configure: (MVC.Application) throws -> Void) rethrows
+    {
+        let application = MVC.Application(
+            basePath: basePath, 
+            middleware: self.middleware + middleware)
+        try configure(application)
+
+        for route in application.routes {
+            self.registerRoute(
+                path: route.path,
+                methods: route.methods,
+                handler: route.handler)
+        }
+    }
 }
 
 extension RouterProtocol {

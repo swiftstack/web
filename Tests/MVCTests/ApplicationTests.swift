@@ -51,5 +51,15 @@ class ApplicationTests: TestCase {
             let response = try application.process(request)
             assertEqual(response.status, .ok)
         }
+
+        scope {
+            let application = MVC.Application(basePath: "/api")
+            try application.addApplication(basePath: "/v1") { v1 in
+                try v1.addController(TestController.self)
+            }
+            let request = Request(url: "/api/v1/test", method: .get)
+            let response = try application.process(request)
+            assertEqual(response.status, .ok)
+        }
     }
 }
