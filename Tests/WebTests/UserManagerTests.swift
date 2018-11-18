@@ -1,6 +1,6 @@
 import Test
 import MVC
-import Foundation
+import UUID
 @testable import HTTP
 @testable import Web
 
