@@ -47,7 +47,7 @@ extension Array where Element == Cookie {
             return first { $0.name == name }?.value
         }
         mutating set {
-            guard let index = index(where: { $0.name == name }) else {
+            guard let index = firstIndex(where: { $0.name == name }) else {
                 if let newValue = newValue {
                     self.append(Cookie(name: name, value: newValue))
                 }
