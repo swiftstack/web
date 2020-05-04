@@ -43,9 +43,9 @@ class AntiForgeryMiddlewareTests: TestCase {
             let application = try makeApplication()
             let request = Request(url: "/", method: .get)
             let response = try application.process(request)
-            assertEqual(response.status, .ok)
-            assertEqual(response.string?.isEmpty, false)
-            assertNotEqual(response.string, "error")
+            expect(response.status == .ok)
+            expect(response.string?.isEmpty == false)
+            expect(response.string != "error")
         }
     }
 
@@ -54,8 +54,8 @@ class AntiForgeryMiddlewareTests: TestCase {
             let application = try makeApplication()
             let request = Request(url: "/", method: .post)
             let response = try application.process(request)
-            assertEqual(response.status, .badRequest)
-            assertNil(response.string)
+            expect(response.status == .badRequest)
+            expect(response.string == nil)
         }
     }
 
@@ -70,8 +70,8 @@ class AntiForgeryMiddlewareTests: TestCase {
             request.cookies = initialResponse.cookies
             let response = try application.process(request)
 
-            assertEqual(response.status, .badRequest)
-            assertNil(response.string)
+            expect(response.status == .badRequest)
+            expect(response.string == nil)
         }
     }
 
@@ -86,8 +86,8 @@ class AntiForgeryMiddlewareTests: TestCase {
             request.cookies = initialResponse.cookies
             request.headers["X-CSRF-Token"] = initialResponse.string
             let response = try application.process(request)
-            assertEqual(response.status, .ok)
-            assertEqual(response.string, "post ok")
+            expect(response.status == .ok)
+            expect(response.string == "post ok")
         }
     }
 }

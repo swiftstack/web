@@ -27,7 +27,7 @@ class ApplicationTests: TestCase {
 
             let request = Request(url: "/api/v1/news/id/2", method: .get)
             let response = try application.process(request)
-            assertEqual(response.status, .ok)
+            expect(response.status == .ok)
         }
     }
 
@@ -49,7 +49,7 @@ class ApplicationTests: TestCase {
             }
             let request = Request(url: "/api/v1/test", method: .get)
             let response = try application.process(request)
-            assertEqual(response.status, .ok)
+            expect(response.status == .ok)
         }
 
         scope {
@@ -59,7 +59,7 @@ class ApplicationTests: TestCase {
             }
             let request = Request(url: "/api/v1/test", method: .get)
             let response = try application.process(request)
-            assertEqual(response.status, .ok)
+            expect(response.status == .ok)
         }
     }
 }

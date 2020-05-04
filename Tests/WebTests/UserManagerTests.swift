@@ -36,15 +36,16 @@ class UserManagerTests: TestCase {
             let user = try users.register(User.NewCredentials(
                 name: "user", email: "new@user.com", password: "123"))
 
-            assertEqual(user.name, "user")
-            assertEqual(user.email, "new@user.com")
-            assertTrue(user.password == "123")
-            assertTrue(user.password.hash != "123")
+            expect(user.name == "user")
+            expect(user.email == "new@user.com")
+            expect(user.password == "123")
+            expect(user.password.hash != "123")
 
-            assertThrowsError(try users.register(User.NewCredentials(
-                name: "user", email: "new@user.com", password: "123")))
-            { error in
-                assertEqual(error as? DefaultUserManager.Error, .alreadyRegistered)
+            expect(throws: DefaultUserManager.Error.alreadyRegistered) {
+                try users.register(User.NewCredentials(
+                    name: "user",
+                    email: "new@user.com",
+                    password: "123"))
             }
         }
     }
@@ -59,21 +60,21 @@ class UserManagerTests: TestCase {
             let user = try users.login(User.Credentials(
                 email: "new@user.com", password: "123"))
 
-            assertEqual(user.name, "user")
-            assertEqual(user.email, "new@user.com")
-            assertTrue(user.password == "123")
-            assertTrue(user.password.hash != "123")
+            expect(user.name == "user")
+            expect(user.email == "new@user.com")
+            expect(user.password == "123")
+            expect(user.password.hash != "123")
 
-            assertThrowsError(try users.login(User.Credentials(
-                email: "unknown@user.com", password: "123")))
-            { error in
-                assertEqual(error as? DefaultUserManager.Error, .notFound)
+            expect(throws: DefaultUserManager.Error.notFound) {
+                try users.login(User.Credentials(
+                    email: "unknown@user.com", 
+                    password: "123"))
             }
 
-            assertThrowsError(try users.login(User.Credentials(
-                email: "new@user.com", password: "000")))
-            { error in
-                assertEqual(error as? DefaultUserManager.Error, .invalidCredentials)
+            expect(throws: DefaultUserManager.Error.invalidCredentials) {
+                try users.login(User.Credentials(
+                    email: "new@user.com", 
+                    password: "000"))
             }
         }
     }

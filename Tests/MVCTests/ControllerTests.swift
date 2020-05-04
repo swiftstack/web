@@ -44,7 +44,7 @@ class ControllerTests: TestCase {
 
             let request = Request(url: "/", method: .get)
             let response = try application.process(request)
-            assertEqual(response.string, "fetch ok")
+            expect(response.string == "fetch ok")
         }
     }
 
@@ -75,7 +75,7 @@ class ControllerTests: TestCase {
 
             let request = Request(url: "/", method: .get)
             let response = try application.process(request)
-            assertEqual(response.string, "one")
+            expect(response.string == "one")
         }
     }
 
@@ -114,7 +114,7 @@ class ControllerTests: TestCase {
 
             let request = Request(url: "/", method: .get)
             let response = try application.process(request)
-            assertEqual(response.string, "one two")
+            expect(response.string == "one two")
         }
     }
 
@@ -163,7 +163,7 @@ class ControllerTests: TestCase {
 
             let request = Request(url: "/", method: .get)
             let response = try application.process(request)
-            assertEqual(response.string, "one two three")
+            expect(response.string == "one two three")
         }
     }
 
@@ -219,7 +219,7 @@ class ControllerTests: TestCase {
 
             let request = Request(url: "/", method: .get)
             let response = try application.process(request)
-            assertEqual(response.string, "one two three four")
+            expect(response.string == "one two three four")
         }
     }
 
@@ -282,7 +282,7 @@ class ControllerTests: TestCase {
 
             let request = Request(url: "/", method: .get)
             let response = try application.process(request)
-            assertEqual(response.string, "one two three four five")
+            expect(response.string == "one two three four five")
         }
     }
 
@@ -352,7 +352,7 @@ class ControllerTests: TestCase {
 
             let request = Request(url: "/", method: .get)
             let response = try application.process(request)
-            assertEqual(response.string, "one two three four five six")
+            expect(response.string == "one two three four five six")
         }
     }
 
@@ -381,7 +381,7 @@ class ControllerTests: TestCase {
             request.headers["test context"] = "test context ok"
 
             let response = try application.process(request)
-            assertEqual(response.string, "test context ok")
+            expect(response.string == "test context ok")
         }
     }
 
@@ -417,7 +417,7 @@ class ControllerTests: TestCase {
             request.headers["test context"] = "test context ok"
 
             let response = try application.process(request)
-            assertEqual(response.string, "test context ok one")
+            expect(response.string == "test context ok one")
         }
     }
 
@@ -447,7 +447,7 @@ class ControllerTests: TestCase {
             request.headers["test context"] = "test context ok"
 
             let response = try application.process(request)
-            assertEqual(response.headers["controller"], "ok")
+            expect(response.headers["controller"] == "ok")
         }
     }
 }

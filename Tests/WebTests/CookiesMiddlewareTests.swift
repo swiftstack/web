@@ -40,21 +40,21 @@ class CookiesMiddlewareTests: TestCase {
 
             let firstRequest = Request(url: "/first", method: .get)
             let firstResponse = try application.process(firstRequest)
-            assertEqual(firstResponse.cookies.count, 1)
+            expect(firstResponse.cookies.count == 1)
             guard let cookie = firstResponse.cookies.first else {
                 return
             }
-            assertEqual(cookie.name, "swift-stack-cookies")
-            assertFalse(cookie.value.isEmpty)
+            expect(cookie.name == "swift-stack-cookies")
+            expect(!cookie.value.isEmpty)
 
             let secondRequest = Request(url: "/second", method: .get)
             var secondResponse = try application.process(secondRequest)
-            assertEqual(secondResponse.status, .noContent)
-            assertNil(secondResponse.string)
+            expect(secondResponse.status == .noContent)
+            expect(secondResponse.string == nil)
 
             secondRequest.cookies.append(cookie)
             secondResponse = try application.process(secondRequest)
-            assertEqual(secondResponse.string, "cookie-value")
+            expect(secondResponse.string == "cookie-value")
         }
     }
 }

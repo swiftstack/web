@@ -43,7 +43,7 @@ class MiddlewareTests: TestCase {
             let request = Request(url: "/middleware", method: .get)
             let response = try application.process(request)
 
-            assertEqual(response.headers["Custom-Header"], "Middleware")
+            expect(response.headers["Custom-Header"] == "Middleware")
         }
     }
 
@@ -100,9 +100,9 @@ class MiddlewareTests: TestCase {
             let request = Request(url: "/middleware", method: .get)
             let response = try application.process(request)
 
-            assertEqual(response.headers["FirstMiddleware"], "true")
-            assertEqual(response.headers["SecondMiddleware"], "true")
-            assertEqual(response.headers["Middleware"], "first")
+            expect(response.headers["FirstMiddleware"] == "true")
+            expect(response.headers["SecondMiddleware"] == "true")
+            expect(response.headers["Middleware"] == "first")
         }
     }
 }

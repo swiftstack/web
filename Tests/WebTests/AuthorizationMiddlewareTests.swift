@@ -70,23 +70,23 @@ class AuthorizationMiddlewareTests: TestCase {
 
             let userRequest = Request(url: "/user?token=u", method: .get)
             let userResponse = try application.process(userRequest)
-            assertEqual(userResponse.status, .ok)
-            assertEqual(userResponse.string, "user")
+            expect(userResponse.status == .ok)
+            expect(userResponse.string == "user")
 
             let adminRequest = Request(url: "/admin", method: .get)
             let adminResponse = try application.process(adminRequest)
-            assertEqual(adminResponse.status, .unauthorized)
-            assertEqual(adminResponse.string, "login required")
+            expect(adminResponse.status == .unauthorized)
+            expect(adminResponse.string == "login required")
 
             let adminRequest2 = Request(url: "/admin?token=u", method: .get)
             let adminResponse2 = try application.process(adminRequest2)
-            assertEqual(adminResponse2.status, .unauthorized)
-            assertEqual(adminResponse2.string, "access denied")
+            expect(adminResponse2.status == .unauthorized)
+            expect(adminResponse2.string == "access denied")
 
             let adminRequest3 = Request(url: "/admin?token=a", method: .get)
             let adminResponse3 = try application.process(adminRequest3)
-            assertEqual(adminResponse3.status, .ok)
-            assertEqual(adminResponse3.string, "admin")
+            expect(adminResponse3.status == .ok)
+            expect(adminResponse3.string == "admin")
         }
     }
 }
