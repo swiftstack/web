@@ -1,6 +1,6 @@
 import Log
 import HTTP
-import File
+import FileSystem
 
 extension RouterProtocol {
     public func serveStaticFiles(
@@ -34,7 +34,7 @@ extension Response {
 
 extension ContentType {
     init(for file: File) {
-        switch file.name.split(separator: ".").last {
+        switch file.name.extension {
         case .some(let ext): self = ContentType(forExtension: ext)
         case .none: self = .stream
         }
