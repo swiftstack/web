@@ -107,13 +107,11 @@ The API is easy to use, easy to read and easy to update to `async/await` in the 
 
 main.swift
 ```swift
-import Log
-import Fiber
+import Async
 import Web
+import Log
 
-async.use(Fiber.self)
-
-async.task {
+async {
     do {
         let application = try WebHost(bootstrap: WikiApplication())
         try application.run(at: "0.0.0.0", on: 8080)
@@ -122,7 +120,7 @@ async.task {
     }
 }
 
-async.loop.run()
+loop.run()
 ```
 
 ### Built-in Dependency Injector
