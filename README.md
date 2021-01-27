@@ -11,7 +11,7 @@ Key features:
 ## Package.swift
 
 ```swift
-.package(url: "https://github.com/swift-stack/web.git", .branch("dev"))
+.package(url: "https://github.com/swift-stack/web.git", .branch("fiber"))
 ```
 
 ### Fast as hell
