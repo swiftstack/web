@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+
+swift build
+
+export DYLD_LIBRARY_PATH=/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/lib/swift/macosx
+
+.build/debug/Tests/MVC/Application
+.build/debug/Tests/MVC/Controller
+.build/debug/Tests/MVC/ControllerMiddleware
+
+.build/debug/Tests/Web/AntiForgeryMiddleware
+.build/debug/Tests/Web/AuthorizationMiddleware
+.build/debug/Tests/Web/CookiesMiddleware
+.build/debug/Tests/Web/UserManager
