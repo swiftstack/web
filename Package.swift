@@ -18,19 +18,31 @@ let package = Package(
     targets: [
         .target(
             name: "Web",
-            dependencies: ["MVC", "AIO", "Log"]),
+            dependencies: ["MVC", "AIO", "Log"],
+            swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
+            ]),
         .target(
             name: "MVC",
             dependencies: [
                 "HTTP", 
                 .product(name: "SHA1", package: "Crypto"), 
-                .product(name: "UUID", package: "Crypto")]),
+                .product(name: "UUID", package: "Crypto")],
+            swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
+            ]),
         .testTarget(
             name: "WebTests",
-            dependencies: ["Web", "Test"]),
+            dependencies: ["Web", "Test"],
+            swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
+            ]),
         .testTarget(
             name: "MVCTests",
-            dependencies: ["MVC", "Test"]),
+            dependencies: ["MVC", "Test"],
+            swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
+            ]),
     ]
 )
 
