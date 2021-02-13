@@ -6,8 +6,8 @@ public class CookiesMiddleware: Middleware {
     public static var cookiesName: String = "swift-stack-cookies"
 
     public static func chain(
-        with middleware: @escaping (Context) throws -> Void
-    ) -> (Context) throws -> Void {
+        with middleware: @escaping (Context) async throws -> Void
+    ) -> (Context) async throws -> Void {
         return { context in
             let storage = try context.services.resolve(CookiesStorage.self)
 
@@ -16,7 +16,7 @@ public class CookiesMiddleware: Middleware {
                     context.cookies = cookies
             }
 
-            try middleware(context)
+            try await middleware(context)
 
             guard context.cookies.hasChanges else {
                 return

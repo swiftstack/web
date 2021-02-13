@@ -43,10 +43,10 @@ extension Application {
     }
 
     // @testable
-    func process(_ request: Request) throws -> Response {
+    func process(_ request: Request) async throws -> Response {
         let router = HTTP.Router()
         router.addApplication(self)
-        return try router.process(request)
+        return try await router.process(request)
     }
 }
 

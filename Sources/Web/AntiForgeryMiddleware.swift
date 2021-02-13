@@ -8,15 +8,15 @@ public struct AntiForgeryMiddleware: Middleware {
     static var tokenHeaderName: HeaderName = "X-CSRF-Token"
 
     public static func chain(
-        with middleware: @escaping (Context) throws -> Void
-    ) -> (Context) throws -> Void {
+        with middleware: @escaping (Context) async throws -> Void
+    ) -> (Context) async throws -> Void {
         return { context in
             guard !context.request.isSafe else {
                 // generate new token if empty
                 if context.cookies[tokenCookieName] == nil {
                     context.cookies[tokenCookieName] = UUID().uuidString
                 }
-                try middleware(context)
+                try await middleware(context)
                 return
             }
 
@@ -26,7 +26,7 @@ public struct AntiForgeryMiddleware: Middleware {
                     context.response = Response(status: .badRequest)
                     return
             }
-            try middleware(context)
+            try await middleware(context)
         }
     }
 }

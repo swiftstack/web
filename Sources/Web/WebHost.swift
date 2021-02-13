@@ -33,8 +33,8 @@ public struct WebHost {
         try bootstrap.configure(router: server.router)
     }
 
-    public func run() throws {
-        try server.start()
+    public func run() async throws {
+        try await server.start()
     }
 }
 

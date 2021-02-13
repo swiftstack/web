@@ -11,24 +11,25 @@ extension RouterProtocol {
         for path in children {
             route(get: path) { (request: Request) -> Response in
                 if request.url.path.last == "/" {
-                    return try notFoundHandler(request)
+                    return try await notFoundHandler(request)
                 }
                 let file = try File(at: basePath + request.url.path)
                 guard file.isExists else {
-                    return try notFoundHandler(request)
+                    return try await notFoundHandler(request)
                 }
-                return try Response(contentOf: file)
+                return try await Response.asyncInit(contentOf: file)
             }
         }
     }
 }
 
 extension Response {
-    public convenience init(contentOf file: File) throws {
-        self.init(status: .ok)
+    public static func asyncInit(contentOf file: File) async throws -> Response {
+        let response = Response(status: .ok)
         let stream = try file.open(flags: [.read]).inputStream
-        self.bytes = try stream.readUntilEnd()
-        self.contentType = ContentType(for: file)
+        response.bytes = try await stream.readUntilEnd()
+        response.contentType = ContentType(for: file)
+        return response
     }
 }
 

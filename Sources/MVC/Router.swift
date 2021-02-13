@@ -28,8 +28,8 @@ public class Router<T: Controller> {
 
     func chainMiddleware(
         _ middleware: [Middleware.Type],
-        with handler: @escaping (Context) throws -> Void
-    ) -> (Context) throws -> Void {
+        with handler: @escaping (Context) async throws -> Void
+    ) -> (Context) async throws -> Void {
         var handler = handler
         for next in middleware.reversed() {
             handler = next.chain(with: handler)
@@ -88,13 +88,13 @@ public class Router<T: Controller> {
     @usableFromInline
     func makeMiddleware(
         for path: String,
-        wrapping accessor: @escaping (T) -> () throws -> ApiResult
-    ) -> (Context) throws -> Void {
+        wrapping accessor: @escaping (T) -> () async throws -> ApiResult
+    ) -> (Context) async throws -> Void {
         return { context in
             let controller = try self.constructor(context)
             let handler = accessor(controller)
-            let result = try handler()
-            try Coder.updateRespone(
+            let result = try await handler()
+            try await Coder.updateRespone(
                 context.response, for: context.request, with: result)
         }
     }
@@ -102,18 +102,18 @@ public class Router<T: Controller> {
     @usableFromInline
     func makeMiddleware(
         for path: String,
-        wrapping accessor: @escaping (T) -> () throws -> Encodable
-    ) -> (Context) throws -> Void {
+        wrapping accessor: @escaping (T) -> () async throws -> Encodable
+    ) -> (Context) async throws -> Void {
         return { context in
             let controller = try self.constructor(context)
             let handler = accessor(controller)
-            let result = try handler()
+            let result = try await handler()
             switch result {
             case let value as Optional<Any> where value == nil:
                 context.response.status = .noContent
                 context.response.body = .none
             default:
-                try Coder.updateRespone(
+                try await Coder.updateRespone(
                     context.response,
                     for: context.request,
                     with: .object(result))
@@ -124,12 +124,12 @@ public class Router<T: Controller> {
     @usableFromInline
     func makeMiddleware(
         for path: String,
-        wrapping accessor: @escaping (T) -> () throws -> Void
-    ) -> (Context) throws -> Void {
+        wrapping accessor: @escaping (T) -> () async throws -> Void
+    ) -> (Context) async throws -> Void {
         return { context in
             let controller = try self.constructor(context)
             let handler = accessor(controller)
-            try handler()
+            try await handler()
         }
     }
 
@@ -138,8 +138,8 @@ public class Router<T: Controller> {
     @usableFromInline
     func makeMiddleware<Model: Decodable>(
         for path: String,
-        wrapping accessor: @escaping (T) -> (Model) throws -> ApiResult
-    ) -> (Context) throws -> Void {
+        wrapping accessor: @escaping (T) -> (Model) async throws -> ApiResult
+    ) -> (Context) async throws -> Void {
         let urlMatcher = URLParamMatcher(path)
 
         if urlMatcher.params.count > 0 {
@@ -152,8 +152,8 @@ public class Router<T: Controller> {
 
                 let values = urlMatcher.match(from: context.request.url.path)
                 let match = try Model(from: KeyValueDecoder(values))
-                let result = try handler(match)
-                try Coder.updateRespone(response, for: request, with: result)
+                let result = try await handler(match)
+                try await Coder.updateRespone(response, for: request, with: result)
             }
         } else {
             return { context in
@@ -163,9 +163,9 @@ public class Router<T: Controller> {
                 let request = context.request
                 let response = context.response
 
-                let model = try Coder.decode(Model.self, from: request)
-                let result = try handler(model)
-                try Coder.updateRespone(response, for: request, with: result)
+                let model = try await Coder.decode(Model.self, from: request)
+                let result = try await handler(model)
+                try await Coder.updateRespone(response, for: request, with: result)
             }
         }
     }
@@ -173,8 +173,8 @@ public class Router<T: Controller> {
     @usableFromInline
     func makeMiddleware<Model: Decodable>(
         for path: String,
-        wrapping accessor: @escaping (T) -> (Model) throws -> Encodable
-    ) -> (Context) throws -> Void {
+        wrapping accessor: @escaping (T) -> (Model) async throws -> Encodable
+    ) -> (Context) async throws -> Void {
         let urlMatcher = URLParamMatcher(path)
 
         if urlMatcher.params.count > 0 {
@@ -184,13 +184,13 @@ public class Router<T: Controller> {
 
                 let values = urlMatcher.match(from: context.request.url.path)
                 let match = try Model(from: KeyValueDecoder(values))
-                let result = try handler(match)
+                let result = try await handler(match)
                 switch result {
                 case let value as Optional<Any> where value == nil:
                     context.response.status = .noContent
                     context.response.body = .none
                 default:
-                    try Coder.updateRespone(
+                    try await Coder.updateRespone(
                         context.response,
                         for: context.request,
                         with: .object(result))
@@ -201,14 +201,14 @@ public class Router<T: Controller> {
                 let controller = try self.constructor(context)
                 let handler = accessor(controller)
 
-                let model = try Coder.decode(Model.self, from: context.request)
-                let result = try handler(model)
+                let model = try await Coder.decode(Model.self, from: context.request)
+                let result = try await handler(model)
                 switch result {
                 case let value as Optional<Any> where value == nil:
                     context.response.status = .noContent
                     context.response.body = .none
                 default:
-                    try Coder.updateRespone(
+                    try await Coder.updateRespone(
                         context.response,
                         for: context.request,
                         with: .object(result))
@@ -220,8 +220,8 @@ public class Router<T: Controller> {
     @usableFromInline
     func makeMiddleware<Model: Decodable>(
         for path: String,
-        wrapping accessor: @escaping (T) -> (Model) throws -> Void
-    ) -> (Context) throws -> Void {
+        wrapping accessor: @escaping (T) -> (Model) async throws -> Void
+    ) -> (Context) async throws -> Void {
         let urlMatcher = URLParamMatcher(path)
 
         if urlMatcher.params.count > 0 {
@@ -231,7 +231,7 @@ public class Router<T: Controller> {
 
                 let values = urlMatcher.match(from: context.request.url.path)
                 let match = try Model(from: KeyValueDecoder(values))
-                try handler(match)
+                try await handler(match)
             }
         } else {
             return { context in
@@ -240,8 +240,8 @@ public class Router<T: Controller> {
 
                 let request = context.request
 
-                let model = try Coder.decode(Model.self, from: request)
-                try handler(model)
+                let model = try await Coder.decode(Model.self, from: request)
+                try await handler(model)
             }
         }
     }
@@ -249,8 +249,8 @@ public class Router<T: Controller> {
     @usableFromInline
     func makeMiddleware<Match: Decodable, Model: Decodable>(
         for path: String,
-        wrapping accessor: @escaping (T) -> (Match, Model) throws -> ApiResult
-    ) -> (Context) throws -> Void {
+        wrapping accessor: @escaping (T) -> (Match, Model) async throws -> ApiResult
+    ) -> (Context) async throws -> Void {
         let urlMatcher = URLParamMatcher(path)
 
         guard urlMatcher.params.count > 0 else {
@@ -266,17 +266,17 @@ public class Router<T: Controller> {
 
             let values = urlMatcher.match(from: request.url.path)
             let match = try Match(from: KeyValueDecoder(values))
-            let model = try Coder.decode(Model.self, from: request)
-            let result = try handler(match, model)
-            try Coder.updateRespone(response, for: request, with: result)
+            let model = try await Coder.decode(Model.self, from: request)
+            let result = try await handler(match, model)
+            try await Coder.updateRespone(response, for: request, with: result)
         }
     }
 
     @usableFromInline
     func makeMiddleware<Match: Decodable, Model: Decodable>(
         for path: String,
-        wrapping accessor: @escaping (T) -> (Match, Model) throws -> Encodable
-    ) -> (Context) throws -> Void {
+        wrapping accessor: @escaping (T) -> (Match, Model) async throws -> Encodable
+    ) -> (Context) async throws -> Void {
         let urlMatcher = URLParamMatcher(path)
 
         guard urlMatcher.params.count > 0 else {
@@ -292,9 +292,9 @@ public class Router<T: Controller> {
 
             let values = urlMatcher.match(from: request.url.path)
             let match = try Match(from: KeyValueDecoder(values))
-            let model = try Coder.decode(Model.self, from: request)
-            let result = try handler(match, model)
-            try Coder.updateRespone(
+            let model = try await Coder.decode(Model.self, from: request)
+            let result = try await handler(match, model)
+            try await Coder.updateRespone(
                 response,
                 for: request,
                 with: .object(result))
@@ -304,8 +304,8 @@ public class Router<T: Controller> {
     @usableFromInline
     func makeMiddleware<URLMatch: Decodable, Model: Decodable>(
         for path: String,
-        wrapping accessor: @escaping (T) -> (URLMatch, Model) throws -> Void
-    ) -> (Context) throws -> Void {
+        wrapping accessor: @escaping (T) -> (URLMatch, Model) async throws -> Void
+    ) -> (Context) async throws -> Void {
         let urlMatcher = URLParamMatcher(path)
 
         guard urlMatcher.params.count > 0 else {
@@ -318,8 +318,8 @@ public class Router<T: Controller> {
 
             let values = urlMatcher.match(from: context.request.url.path)
             let match = try URLMatch(from: KeyValueDecoder(values))
-            let model = try Coder.decode(Model.self, from: context.request)
-            try handler(match, model)
+            let model = try await Coder.decode(Model.self, from: context.request)
+            try await handler(match, model)
         }
     }
 
@@ -328,18 +328,18 @@ public class Router<T: Controller> {
     @usableFromInline
     func makeHandler(
         through middleware: [Middleware.Type],
-        to handler: @escaping (Context) throws -> Void,
+        to handler: @escaping (Context) async throws -> Void,
         authorize authorization: Authorization
     ) -> RequestHandler {
         let middleware = self.middleware + middleware
         let chain = chainMiddleware(middleware, with: handler)
 
-        return { (request: Request) throws -> Response in
+        return { (request: Request) async throws -> Response in
             let context = Context(
                 request: request,
                 authorization: authorization,
                 services: self.services)
-            try chain(context)
+            try await chain(context)
             return context.response
         }
     }
@@ -352,7 +352,7 @@ public class Router<T: Controller> {
         methods: MethodSet,
         authorization: Authorization?,
         middleware: [Middleware.Type] = [],
-        handler: @escaping (T) -> () throws -> ApiResult
+        handler: @escaping (T) -> () async throws -> ApiResult
     ) {
         let handlerMiddleware = makeMiddleware(for: path, wrapping: handler)
         let handler = makeHandler(
@@ -368,7 +368,7 @@ public class Router<T: Controller> {
         methods: MethodSet,
         authorization: Authorization?,
         middleware: [Middleware.Type] = [],
-        handler: @escaping (T) -> () throws -> Result
+        handler: @escaping (T) -> () async throws -> Result
     ) {
         let handlerMiddleware = makeMiddleware(for: path, wrapping: handler)
         let authorization = authorization ?? self.authorization
@@ -385,7 +385,7 @@ public class Router<T: Controller> {
         methods: MethodSet,
         authorization: Authorization?,
         middleware: [Middleware.Type] = [],
-        handler: @escaping (T) -> () throws -> Void
+        handler: @escaping (T) -> () async throws -> Void
     ) {
         let handlerMiddleware = makeMiddleware(for: path, wrapping: handler)
         let authorization = authorization ?? self.authorization
@@ -403,7 +403,7 @@ public class Router<T: Controller> {
         methods: MethodSet,
         authorization: Authorization?,
         middleware: [Middleware.Type] = [],
-        handler: @escaping (T) -> (Model) throws -> ApiResult
+        handler: @escaping (T) -> (Model) async throws -> ApiResult
     ) {
         let handlerMiddleware = makeMiddleware(for: path, wrapping: handler)
         let authorization = authorization ?? self.authorization
@@ -420,7 +420,7 @@ public class Router<T: Controller> {
         methods: MethodSet,
         authorization: Authorization?,
         middleware: [Middleware.Type] = [],
-        handler: @escaping (T) -> (Model) throws -> Result
+        handler: @escaping (T) -> (Model) async throws -> Result
     ) {
         let handlerMiddleware = makeMiddleware(for: path, wrapping: handler)
         let authorization = authorization ?? self.authorization
@@ -437,7 +437,7 @@ public class Router<T: Controller> {
         methods: MethodSet,
         authorization: Authorization?,
         middleware: [Middleware.Type] = [],
-        handler: @escaping (T) -> (Model) throws -> Void
+        handler: @escaping (T) -> (Model) async throws -> Void
     ) {
         let handlerMiddleware = makeMiddleware(for: path, wrapping: handler)
         let authorization = authorization ?? self.authorization
@@ -455,7 +455,7 @@ public class Router<T: Controller> {
         methods: MethodSet,
         authorization: Authorization?,
         middleware: [Middleware.Type] = [],
-        handler: @escaping (T) -> (URLMatch, Model) throws -> ApiResult
+        handler: @escaping (T) -> (URLMatch, Model) async throws -> ApiResult
     ) {
         let handlerMiddleware = makeMiddleware(for: path, wrapping: handler)
         let authorization = authorization ?? self.authorization
@@ -472,7 +472,7 @@ public class Router<T: Controller> {
         methods: MethodSet,
         authorization: Authorization?,
         middleware: [Middleware.Type] = [],
-        handler: @escaping (T) -> (URLMatch, Model) throws -> Result
+        handler: @escaping (T) -> (URLMatch, Model) async throws -> Result
     ) {
         let handlerMiddleware = makeMiddleware(for: path, wrapping: handler)
         let authorization = authorization ?? self.authorization
@@ -489,7 +489,7 @@ public class Router<T: Controller> {
         methods: MethodSet,
         authorization: Authorization?,
         middleware: [Middleware.Type] = [],
-        handler: @escaping (T) -> (URLMatch, Model) throws -> Void
+        handler: @escaping (T) -> (URLMatch, Model) async throws -> Void
     ) {
         let handlerMiddleware = makeMiddleware(for: path, wrapping: handler)
         let authorization = authorization ?? self.authorization
