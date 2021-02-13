@@ -10,7 +10,7 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "Log"),
-        .package(name: "AIO"),
+        .package(name: "FileSystem"),
         .package(name: "HTTP"),
         .package(name: "Crypto"),
         .package(name: "Test")
@@ -18,7 +18,7 @@ let package = Package(
     targets: [
         .target(
             name: "Web",
-            dependencies: ["MVC", "AIO", "Log"],
+            dependencies: ["MVC", "FileSystem", "Log"],
             swiftSettings: [
                 .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
             ]),
