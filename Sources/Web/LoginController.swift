@@ -19,7 +19,7 @@ public final class LoginController: Controller, Inject2Services {
     func register(credentials: User.NewCredentials) throws -> User {
         let user = try users.register(credentials)
         guard let id = user.id else {
-            throw HTTP.Error.internalServerError
+            throw HTTP.Server.Error.internalServerError
         }
         context.signIn(id: id)
         return user
@@ -28,7 +28,7 @@ public final class LoginController: Controller, Inject2Services {
     func login(credentials: User.Credentials) throws -> String {
         let user = try users.login(credentials)
         guard let id = user.id else {
-            throw HTTP.Error.internalServerError
+            throw HTTP.Server.Error.internalServerError
         }
         context.signIn(id: id)
         return user.name
