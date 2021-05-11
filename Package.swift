@@ -20,6 +20,7 @@ let package = Package(
             name: "Web",
             dependencies: ["MVC", "FileSystem", "Log"],
             swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-disable-availability-checking"]),
                 .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
             ]),
         .target(
@@ -29,6 +30,7 @@ let package = Package(
                 .product(name: "SHA1", package: "Crypto"), 
                 .product(name: "UUID", package: "Crypto")],
             swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-disable-availability-checking"]),
                 .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
             ]),
     ]
@@ -60,6 +62,7 @@ func addTest(target: String, name: String) {
             dependencies: [.init(stringLiteral: target), "Test"],
             path: "Tests/\(target)/\(name)",
             swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-disable-availability-checking"]),
                 .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
             ]))
 }
