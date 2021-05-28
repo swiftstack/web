@@ -24,12 +24,12 @@ struct TestAuthorization: AuthorizationProtocol, Inject {
 
     func loginRequired(context: Context) {
         context.response = Response(status: .unauthorized)
-        context.response.string = "login required"
+        context.response.body = .output("login required")
     }
 
     func accessDenied(context: Context) {
         context.response = Response(status: .unauthorized)
-        context.response.string = "access denied"
+        context.response.body = .output("access denied")
     }
 }
 
@@ -69,22 +69,22 @@ test.case("Middleware") {
     let userRequest = Request(url: "/user?token=u", method: .get)
     let userResponse = try await application.process(userRequest)
     expect(userResponse.status == .ok)
-    expect(userResponse.string == "user")
+    expect(try await userResponse.readBody(as: UTF8.self) == "user")
 
     let adminRequest = Request(url: "/admin", method: .get)
     let adminResponse = try await application.process(adminRequest)
     expect(adminResponse.status == .unauthorized)
-    expect(adminResponse.string == "login required")
+    expect(try await adminResponse.readBody(as: UTF8.self) == "login required")
 
     let adminRequest2 = Request(url: "/admin?token=u", method: .get)
     let adminResponse2 = try await application.process(adminRequest2)
     expect(adminResponse2.status == .unauthorized)
-    expect(adminResponse2.string == "access denied")
+    expect(try await adminResponse2.readBody(as: UTF8.self) == "access denied")
 
     let adminRequest3 = Request(url: "/admin?token=a", method: .get)
     let adminResponse3 = try await application.process(adminRequest3)
     expect(adminResponse3.status == .ok)
-    expect(adminResponse3.string == "admin")
+    expect(try await adminResponse3.readBody(as: UTF8.self) == "admin")
 }
 
 test.run()

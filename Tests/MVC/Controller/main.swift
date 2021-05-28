@@ -43,7 +43,7 @@ test.case("Injectable") {
 
         let request = Request(url: "/", method: .get)
         let response = try await application.process(request)
-        expect(response.string == "fetch ok")
+        expect(try await response.readBody(as: UTF8.self) == "fetch ok")
     }
 }
 
@@ -74,7 +74,7 @@ test.case("InjectService") {
 
         let request = Request(url: "/", method: .get)
         let response = try await application.process(request)
-        expect(response.string == "one")
+        expect(try await response.readBody(as: UTF8.self) == "one")
     }
 }
 
@@ -113,7 +113,7 @@ test.case("Inject2Services") {
 
         let request = Request(url: "/", method: .get)
         let response = try await application.process(request)
-        expect(response.string == "one two")
+        expect(try await response.readBody(as: UTF8.self) == "one two")
     }
 }
 
@@ -162,7 +162,7 @@ test.case("Inject3Services") {
 
         let request = Request(url: "/", method: .get)
         let response = try await application.process(request)
-        expect(response.string == "one two three")
+        expect(try await response.readBody(as: UTF8.self) == "one two three")
     }
 }
 
@@ -218,7 +218,7 @@ test.case("Inject4Services") {
 
         let request = Request(url: "/", method: .get)
         let response = try await application.process(request)
-        expect(response.string == "one two three four")
+        expect(try await response.readBody(as: UTF8.self) == "one two three four")
     }
 }
 
@@ -281,7 +281,7 @@ test.case("Inject5Services") {
 
         let request = Request(url: "/", method: .get)
         let response = try await application.process(request)
-        expect(response.string == "one two three four five")
+        expect(try await response.readBody(as: UTF8.self) == "one two three four five")
     }
 }
 
@@ -351,7 +351,7 @@ test.case("Inject6Services") {
 
         let request = Request(url: "/", method: .get)
         let response = try await application.process(request)
-        expect(response.string == "one two three four five six")
+        expect(try await response.readBody(as: UTF8.self) == "one two three four five six")
     }
 }
 
@@ -380,7 +380,7 @@ test.case("InjectContext") {
         request.headers["test context"] = "test context ok"
 
         let response = try await application.process(request)
-        expect(response.string == "test context ok")
+        expect(try await response.readBody(as: UTF8.self) == "test context ok")
     }
 }
 
@@ -416,7 +416,7 @@ test.case("InjectContextService") {
         request.headers["test context"] = "test context ok"
 
         let response = try await application.process(request)
-        expect(response.string == "test context ok one")
+        expect(try await response.readBody(as: UTF8.self) == "test context ok one")
     }
 }
 

@@ -27,7 +27,7 @@ extension Response {
     public static func asyncInit(contentOf file: File) async throws -> Response {
         let response = Response(status: .ok)
         let stream = try file.open(flags: [.read]).inputStream
-        response.bytes = try await stream.readUntilEnd()
+        response.body = .output(try await stream.readUntilEnd())
         response.contentType = ContentType(for: file)
         return response
     }

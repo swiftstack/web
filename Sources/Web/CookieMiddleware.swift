@@ -24,7 +24,7 @@ public class CookiesMiddleware: Middleware {
 
             guard context.cookies.count > 0 else {
                 try storage.delete(hash: context.cookies.hash)
-                context.response.cookies.append(Cookie(
+                context.response.cookies.append(SetCookie(
                     name: cookiesName,
                     value: "",
                     expires: Date(timeIntervalSince1970: 0)))
@@ -32,7 +32,7 @@ public class CookiesMiddleware: Middleware {
             }
 
             try storage.upsert(cookies: context.cookies)
-            context.response.cookies.append(Cookie(
+            context.response.cookies.append(SetCookie(
                 name: cookiesName,
                 value: context.cookies.hash))
         }

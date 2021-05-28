@@ -111,7 +111,7 @@ public class Router<T: Controller> {
             switch result {
             case let value as Optional<Any> where value == nil:
                 context.response.status = .noContent
-                context.response.body = .none
+                context.response.body = .output([])
             default:
                 try await Coder.updateRespone(
                     context.response,
@@ -188,7 +188,7 @@ public class Router<T: Controller> {
                 switch result {
                 case let value as Optional<Any> where value == nil:
                     context.response.status = .noContent
-                    context.response.body = .none
+                    context.response.body = .output([])
                 default:
                     try await Coder.updateRespone(
                         context.response,
@@ -206,7 +206,7 @@ public class Router<T: Controller> {
                 switch result {
                 case let value as Optional<Any> where value == nil:
                     context.response.status = .noContent
-                    context.response.body = .none
+                    context.response.body = .output([])
                 default:
                     try await Coder.updateRespone(
                         context.response,

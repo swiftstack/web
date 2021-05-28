@@ -34,7 +34,7 @@ import struct Foundation.UUID
 
 public class Cookies {
     public let hash: String
-    public private(set) var values: [String : Cookie]
+    public private(set) var values: [String : SetCookie]
     public private(set) var hasChanges = false
 
     public var count: Int {
@@ -46,12 +46,12 @@ public class Cookies {
         self.values = [:]
     }
 
-    public init(hash: String, values: [String : Cookie]) {
+    public init(hash: String, values: [String : SetCookie]) {
         self.hash = hash
         self.values = values
     }
 
-    public subscript(setCookie name: String) -> Cookie? {
+    public subscript(setCookie name: String) -> SetCookie? {
         get {
             return values[name]
         }
@@ -63,7 +63,7 @@ public class Cookies {
 
     public subscript(_ name: String) -> String? {
         get {
-            return values[name]?.value
+            return values[name]?.cookie.value
         }
         set {
             self.hasChanges = true
@@ -71,7 +71,7 @@ public class Cookies {
                 values[name] = nil
                 return
             }
-            values[name] = Cookie(name: name, value: newValue)
+            values[name] = SetCookie(name: name, value: newValue)
         }
     }
 }

@@ -42,8 +42,8 @@ test.case("Token") {
     let request = Request(url: "/", method: .get)
     let response = try await application.process(request)
     expect(response.status == .ok)
-    expect(response.string?.isEmpty == false)
-    expect(response.string != "error")
+    expect(try await response.readBody(as: UTF8.self).isEmpty == false)
+    expect(try await response.readBody(as: UTF8.self) != "error")
 }
 
 test.case("PostWithoutTokens") {
@@ -51,7 +51,7 @@ test.case("PostWithoutTokens") {
     let request = Request(url: "/", method: .post)
     let response = try await application.process(request)
     expect(response.status == .badRequest)
-    expect(response.string == nil)
+    expect(try await response.readBody(as: UTF8.self).isEmpty)
 }
 
 test.case("PostWithSingleToken") {
@@ -61,11 +61,11 @@ test.case("PostWithSingleToken") {
         Request(url: "/", method: .get))
 
     let request = Request(url: "/", method: .post)
-    request.cookies = initialResponse.cookies
+    request.cookies = initialResponse.cookies.map { $0.cookie }
     let response = try await application.process(request)
 
     expect(response.status == .badRequest)
-    expect(response.string == nil)
+    expect(try await response.readBody(as: UTF8.self).isEmpty)
 }
 
 test.case("PostWithTokens") {
@@ -75,11 +75,11 @@ test.case("PostWithTokens") {
         Request(url: "/", method: .get))
 
     let request = Request(url: "/", method: .post)
-    request.cookies = initialResponse.cookies
-    request.headers["X-CSRF-Token"] = initialResponse.string
+    request.cookies = initialResponse.cookies.map { $0.cookie }
+    request.headers["X-CSRF-Token"] = try await initialResponse.readBody(as: UTF8.self)
     let response = try await application.process(request)
     expect(response.status == .ok)
-    expect(response.string == "post ok")
+    expect(try await response.readBody(as: UTF8.self) == "post ok")
 }
 
 test.run()

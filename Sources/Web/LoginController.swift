@@ -42,7 +42,7 @@ public final class LoginController: Controller, Inject2Services {
 extension Context {
     func signIn(id: String) {
         let name = CookieAuthorization.userCookieName
-        let cookie = Cookie(name: name, value: id, httpOnly: true)
+        let cookie = SetCookie(name: name, value: id, httpOnly: true)
         cookies[setCookie: name] = cookie
     }
 

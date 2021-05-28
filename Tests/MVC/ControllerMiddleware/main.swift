@@ -8,7 +8,7 @@ test.case("Middleware") {
         ) -> (Context) async throws -> Void {
             return { context in
                 try await middleware(context)
-                context.response.string = "success"
+                context.response.body = .output("success")
                 context.response.headers["Custom-Header"] = "Middleware"
             }
         }
