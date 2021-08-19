@@ -43,7 +43,7 @@ test.case("Middleware") {
         guard let setCookie = firstResponse.cookies.first else {
             return
         }
-        expect(setCookie.cookie.name == "swift-stack-cookies")
+        expect(setCookie.cookie.name == "swiftstack-cookies")
         expect(!setCookie.cookie.value.isEmpty)
 
         let secondRequest = Request(url: "/second", method: .get)

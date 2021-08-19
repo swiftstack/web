@@ -11,12 +11,12 @@ Key features:
 ## Package.swift
 
 ```swift
-.package(url: "https://github.com/swift-stack/web.git", .branch("dev"))
+.package(url: "https://github.com/swiftstack/web.git", .branch("dev"))
 ```
 
 ### Fast as hell
 
-About 80k rps on `single core` (i7 4gen, docker) using [Fiber](http://github.com/swift-stack/fiber).<br>
+About 80k rps on `single core` (i7 4gen, docker) using [Fiber](http://github.com/swiftstack/fiber).<br>
 
 ```bash
 (docker) wrk -t1 -c128 -d5 http://0.0.0.0:8080/plaintext
@@ -102,7 +102,7 @@ extension Application {
 
 ### Simple Asynchronous API
 
-All the modules built on top of [Async](http://github.com/swift-stack/async) which allows us to code without callbacks.<br>
+All the modules built on top of [Async](http://github.com/swiftstack/async) which allows us to code without callbacks.<br>
 The API is easy to use, easy to read and easy to update to `async/await` in the future.
 
 main.swift
