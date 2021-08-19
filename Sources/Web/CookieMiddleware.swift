@@ -3,7 +3,7 @@ import struct HTTP.Cookie
 import struct Foundation.Date
 
 public class CookiesMiddleware: Middleware {
-    public static var cookiesName: String = "swift-stack-cookies"
+    public static var cookiesName: String = "swiftstack-cookies"
 
     public static func chain(
         with middleware: @escaping (Context) throws -> Void

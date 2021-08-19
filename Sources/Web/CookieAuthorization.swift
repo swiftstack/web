@@ -1,7 +1,7 @@
 import class HTTP.Response
 
 public final class CookieAuthorization: AuthorizationProtocol, InjectService {
-    static var userCookieName = "swift-stack-user"
+    static var userCookieName = "swiftstack-user"
 
     let repository: UserRepository
 
