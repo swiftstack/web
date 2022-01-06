@@ -13,7 +13,7 @@ let package = Package(
         .package(name: "FileSystem"),
         .package(name: "HTTP"),
         .package(name: "Crypto"),
-        .package(name: "Test")
+        .package(name: "Test"),
     ],
     targets: [
         .target(
