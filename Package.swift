@@ -18,21 +18,13 @@ let package = Package(
     targets: [
         .target(
             name: "Web",
-            dependencies: ["MVC", "FileSystem", "Log"],
-            swiftSettings: [
-                .unsafeFlags(["-Xfrontend", "-disable-availability-checking"]),
-                .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
-            ]),
+            dependencies: ["MVC", "FileSystem", "Log"]),
         .target(
             name: "MVC",
             dependencies: [
                 "HTTP", 
                 .product(name: "SHA1", package: "Crypto"), 
-                .product(name: "UUID", package: "Crypto")],
-            swiftSettings: [
-                .unsafeFlags(["-Xfrontend", "-disable-availability-checking"]),
-                .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
-            ]),
+                .product(name: "UUID", package: "Crypto")]),
     ]
 )
 
@@ -60,11 +52,7 @@ func addTest(target: String, name: String) {
         .executableTarget(
             name: "Tests/\(target)/\(name)",
             dependencies: [.init(stringLiteral: target), "Test"],
-            path: "Tests/\(target)/\(name)",
-            swiftSettings: [
-                .unsafeFlags(["-Xfrontend", "-disable-availability-checking"]),
-                .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
-            ]))
+            path: "Tests/\(target)/\(name)"))
 }
 
 // MARK: - custom package source
