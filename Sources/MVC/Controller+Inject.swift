@@ -73,8 +73,8 @@ extension Application {
 
     private func check<T, C: Controller>(
         type: T.Type,
-        for controller: C.Type) throws
-    {
+        for controller: C.Type
+    ) throws {
         guard T.self != Context.self else {
             return
         }
@@ -89,8 +89,8 @@ extension Application {
     @inline(__always)
     private func resolveEither<T>(
         _ type: T.Type,
-        _ context: Context) throws -> T
-    {
+        _ context: Context
+    ) throws -> T {
         if T.self == Context.self {
             return context as! T
         } else {

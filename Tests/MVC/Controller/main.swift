@@ -218,7 +218,8 @@ test("Inject4Services") {
 
         let request = Request(url: "/", method: .get)
         let response = try await application.process(request)
-        expect(try await response.readBody(as: UTF8.self) == "one two three four")
+        let body = try await response.readBody(as: UTF8.self)
+        expect(body == "one two three four")
     }
 }
 
@@ -281,7 +282,8 @@ test("Inject5Services") {
 
         let request = Request(url: "/", method: .get)
         let response = try await application.process(request)
-        expect(try await response.readBody(as: UTF8.self) == "one two three four five")
+        let body = try await response.readBody(as: UTF8.self)
+        expect(body == "one two three four five")
     }
 }
 
@@ -351,7 +353,8 @@ test("Inject6Services") {
 
         let request = Request(url: "/", method: .get)
         let response = try await application.process(request)
-        expect(try await response.readBody(as: UTF8.self) == "one two three four five six")
+        let body = try await response.readBody(as: UTF8.self)
+        expect(body == "one two three four five six" )
     }
 }
 
@@ -416,7 +419,8 @@ test("InjectContextService") {
         request.headers["test context"] = "test context ok"
 
         let response = try await application.process(request)
-        expect(try await response.readBody(as: UTF8.self) == "test context ok one")
+        let body = try await response.readBody(as: UTF8.self)
+        expect(body == "test context ok one")
     }
 }
 

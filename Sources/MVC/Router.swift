@@ -82,7 +82,6 @@ public class Router<T: Controller> {
     //     return context.response
     // }
 
-
     // MARK: No arguments
 
     @usableFromInline
@@ -109,7 +108,7 @@ public class Router<T: Controller> {
             let handler = accessor(controller)
             let result = try await handler()
             switch result {
-            case let value as Optional<Any> where value == nil:
+            case let value as (Any?) where value == nil:
                 context.response.status = .noContent
                 context.response.body = .output([])
             default:
@@ -153,7 +152,10 @@ public class Router<T: Controller> {
                 let values = urlMatcher.match(from: context.request.url.path)
                 let match = try Model(from: KeyValueDecoder(values))
                 let result = try await handler(match)
-                try await Coder.updateRespone(response, for: request, with: result)
+                try await Coder.updateRespone(
+                    response,
+                    for: request,
+                    with: result)
             }
         } else {
             return { context in
@@ -165,7 +167,10 @@ public class Router<T: Controller> {
 
                 let model = try await Coder.decode(Model.self, from: request)
                 let result = try await handler(model)
-                try await Coder.updateRespone(response, for: request, with: result)
+                try await Coder.updateRespone(
+                    response,
+                    for: request,
+                    with: result)
             }
         }
     }
@@ -186,7 +191,7 @@ public class Router<T: Controller> {
                 let match = try Model(from: KeyValueDecoder(values))
                 let result = try await handler(match)
                 switch result {
-                case let value as Optional<Any> where value == nil:
+                case let value as (Any?) where value == nil:
                     context.response.status = .noContent
                     context.response.body = .output([])
                 default:
@@ -204,7 +209,7 @@ public class Router<T: Controller> {
                 let model = try await Coder.decode(Model.self, from: context.request)
                 let result = try await handler(model)
                 switch result {
-                case let value as Optional<Any> where value == nil:
+                case let value as (Any?) where value == nil:
                     context.response.status = .noContent
                     context.response.body = .output([])
                 default:
@@ -396,7 +401,6 @@ public class Router<T: Controller> {
         registerRoute(path: path, methods: methods, handler: handler)
     }
 
-
     @inlinable
     public func route<Model: Decodable>(
         path: String,
@@ -447,7 +451,6 @@ public class Router<T: Controller> {
             authorize: authorization)
         registerRoute(path: path, methods: methods, handler: handler)
     }
-
 
     @inlinable
     public func route<URLMatch: Decodable, Model: Decodable>(

@@ -17,19 +17,19 @@ extension RouterProtocol {
                 guard file.isExists else {
                     return try await notFoundHandler(request)
                 }
-                return try await Response.asyncInit(contentOf: file)
+                return try await Response(contentOf: file)
             }
         }
     }
 }
 
 extension Response {
-    public static func asyncInit(contentOf file: File) async throws -> Response {
-        let response = Response(status: .ok)
+    convenience
+    public init(contentOf file: File) async throws {
+        self.init(status: .ok)
         let stream = try file.open(flags: [.read]).inputStream
-        response.body = .output(try await stream.readUntilEnd())
-        response.contentType = ContentType(for: file)
-        return response
+        self.body = .output(try await stream.readUntilEnd())
+        self.contentType = ContentType(for: file)
     }
 }
 

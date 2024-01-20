@@ -53,7 +53,8 @@ test("Middleware") {
 
         secondRequest.cookies.append(setCookie.cookie)
         secondResponse = try await application.process(secondRequest)
-        expect(try await secondResponse.readBody(as: UTF8.self) == "cookie-value")
+        let body = try await secondResponse.readBody(as: UTF8.self)
+        expect(body == "cookie-value")
     }
 }
 

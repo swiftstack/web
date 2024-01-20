@@ -23,7 +23,7 @@ public struct User: UserProtocol {
             self.hash = Password.calculateHash(for: password, with: salt)
         }
 
-        static func ==(lhs: User.Password, rhs: String) -> Bool {
+        static func == (lhs: User.Password, rhs: String) -> Bool {
             return lhs.hash == calculateHash(for: rhs, with: lhs.salt)
         }
 

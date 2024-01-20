@@ -8,7 +8,7 @@ public final class Context {
     public let services: Services
 
     public var cookies: Cookies
-    public var user: UserProtocol? = nil
+    public var user: UserProtocol?
 
     init(
         request: Request,
@@ -34,7 +34,7 @@ import struct Foundation.UUID
 
 public class Cookies {
     public let hash: String
-    public private(set) var values: [String : SetCookie]
+    public private(set) var values: [String: SetCookie]
     public private(set) var hasChanges = false
 
     public var count: Int {
@@ -46,7 +46,7 @@ public class Cookies {
         self.values = [:]
     }
 
-    public init(hash: String, values: [String : SetCookie]) {
+    public init(hash: String, values: [String: SetCookie]) {
         self.hash = hash
         self.values = values
     }

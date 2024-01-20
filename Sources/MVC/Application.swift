@@ -9,8 +9,8 @@ public class Application {
         public init(
             path: String,
             methods: HTTP.Router.MethodSet,
-            handler: @escaping RequestHandler)
-        {
+            handler: @escaping RequestHandler
+        ) {
             self.path = path
             self.methods = methods
             self.handler = handler
@@ -73,12 +73,12 @@ extension Application {
     }
 
     public func addApplication(
-        basePath: String = "", 
+        basePath: String = "",
         middleware: [Middleware.Type] = [],
-        configure: (MVC.Application) throws -> Void) rethrows
-    {
+        configure: (MVC.Application) throws -> Void
+    ) rethrows {
         let application = MVC.Application(
-            basePath: basePath, 
+            basePath: basePath,
             middleware: self.middleware + middleware)
         try configure(application)
 
@@ -105,12 +105,12 @@ extension RouterProtocol {
 
 extension RouterProtocol {
     public func addApplication(
-        basePath: String = "", 
+        basePath: String = "",
         middleware: [Middleware.Type] = [],
-        configure: (MVC.Application) throws -> Void) rethrows
-    {
+        configure: (MVC.Application) throws -> Void
+    ) rethrows {
         let application = MVC.Application(
-            basePath: basePath, 
+            basePath: basePath,
             middleware: middleware)
         try configure(application)
         addApplication(application)

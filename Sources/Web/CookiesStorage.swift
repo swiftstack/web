@@ -7,7 +7,7 @@ public protocol CookiesStorage: Inject {
 import struct HTTP.Cookie
 
 public final class InMemoryCookiesStorage: CookiesStorage {
-    static var cookies: [String : [String : SetCookie]] = [:]
+    static var cookies: [String: [String: SetCookie]] = [:]
 
     public init() {}
 

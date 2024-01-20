@@ -5,7 +5,7 @@
 import HTTP
 public typealias ApiResult = HTTP.ApiResult
 
-// MARK: -> ApiResult
+// MARK: () -> ApiResult
 
 extension Router {
 
@@ -318,7 +318,7 @@ extension Router {
     }
 }
 
-// MARK: -> Encodable
+// MARK: () -> Encodable
 
 extension Router {
 
@@ -631,7 +631,7 @@ extension Router {
     }
 }
 
-// MARK: -> Void
+// MARK: () -> Void
 
 extension Router {
 

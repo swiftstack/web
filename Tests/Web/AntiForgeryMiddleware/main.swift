@@ -76,7 +76,8 @@ test("PostWithTokens") {
 
     let request = Request(url: "/", method: .post)
     request.cookies = initialResponse.cookies.map { $0.cookie }
-    request.headers["X-CSRF-Token"] = try await initialResponse.readBody(as: UTF8.self)
+    let body = try await initialResponse.readBody(as: UTF8.self)
+    request.headers["X-CSRF-Token"] = body
     let response = try await application.process(request)
     expect(response.status == .ok)
     expect(try await response.readBody(as: UTF8.self) == "post ok")
