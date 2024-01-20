@@ -26,7 +26,7 @@ final class TestServiceFour: ServiceFour {}
 final class TestServiceFive: ServiceFive {}
 final class TestServiceSix: ServiceSix {}
 
-test.case("Injectable") {
+test("Injectable") {
     final class TestController: Controller, Inject {
         static func setup(router: Router<TestController>) throws {
             router.route(get: "/", to: fetch)
@@ -47,7 +47,7 @@ test.case("Injectable") {
     }
 }
 
-test.case("InjectService") {
+test("InjectService") {
     final class TestController: Controller, InjectService {
         static func setup(router: Router<TestController>) throws {
             router.route(get: "/", to: fetch)
@@ -78,7 +78,7 @@ test.case("InjectService") {
     }
 }
 
-test.case("Inject2Services") {
+test("Inject2Services") {
     final class TestController: Controller, Inject2Services {
         static func setup(router: Router<TestController>) throws {
             router.route(get: "/", to: fetch)
@@ -117,7 +117,7 @@ test.case("Inject2Services") {
     }
 }
 
-test.case("Inject3Services") {
+test("Inject3Services") {
     final class TestController: Controller, Inject3Services {
         static func setup(router: Router<TestController>) throws {
             router.route(get: "/", to: fetch)
@@ -166,7 +166,7 @@ test.case("Inject3Services") {
     }
 }
 
-test.case("Inject4Services") {
+test("Inject4Services") {
     final class TestController: Controller, Inject4Services {
         static func setup(router: Router<TestController>) throws {
             router.route(get: "/", to: fetch)
@@ -222,7 +222,7 @@ test.case("Inject4Services") {
     }
 }
 
-test.case("Inject5Services") {
+test("Inject5Services") {
     final class TestController: Controller, Inject5Services {
         static func setup(router: Router<TestController>) throws {
             router.route(get: "/", to: fetch)
@@ -285,7 +285,7 @@ test.case("Inject5Services") {
     }
 }
 
-test.case("Inject6Services") {
+test("Inject6Services") {
     final class TestController: Controller, Inject6Services {
         static func setup(router: Router<TestController>) throws {
             router.route(get: "/", to: fetch)
@@ -355,7 +355,7 @@ test.case("Inject6Services") {
     }
 }
 
-test.case("InjectContext") {
+test("InjectContext") {
     final class TestController: Controller, InjectService {
         static func setup(router: Router<TestController>) throws {
             router.route(get: "/", to: handler)
@@ -384,7 +384,7 @@ test.case("InjectContext") {
     }
 }
 
-test.case("InjectContextService") {
+test("InjectContextService") {
     final class TestController: Controller, Inject2Services {
         static func setup(router: Router<TestController>) throws {
             router.route(get: "/", to: handler)
@@ -420,7 +420,7 @@ test.case("InjectContextService") {
     }
 }
 
-test.case("ContextResponse") {
+test("ContextResponse") {
     final class TestController: Controller, InjectService {
         static func setup(router: Router<TestController>) throws {
             router.route(get: "/", to: handler)
@@ -450,4 +450,4 @@ test.case("ContextResponse") {
     }
 }
 
-test.run()
+await run()

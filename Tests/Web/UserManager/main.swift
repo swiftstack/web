@@ -28,7 +28,7 @@ public final class InMemoryUserRepository: UserRepository {
     }
 }
 
-test.case("Register") {
+test("Register") {
     let users = DefaultUserManager(InMemoryUserRepository())
 
     let user = try users.register(User.NewCredentials(
@@ -47,7 +47,7 @@ test.case("Register") {
     }
 }
 
-test.case("Login") {
+test("Login") {
     let users = DefaultUserManager(InMemoryUserRepository())
 
     _ = try users.register(User.NewCredentials(
@@ -74,4 +74,4 @@ test.case("Login") {
     }
 }
 
-test.run()
+await run()

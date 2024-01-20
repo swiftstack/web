@@ -1,7 +1,7 @@
 import Test
 @testable import MVC
 
-test.case("Middleware") {
+test("Middleware") {
     struct TestMiddleware: MVC.Middleware {
         public static func chain(
             with middleware: @escaping (Context) async throws -> Void
@@ -46,7 +46,7 @@ test.case("Middleware") {
     }
 }
 
-test.case("MiddlewareOrder") {
+test("MiddlewareOrder") {
     struct FirstMiddleware: MVC.Middleware {
         public static func chain(
             with middleware: @escaping (Context) async throws -> Void
@@ -105,4 +105,4 @@ test.case("MiddlewareOrder") {
     }
 }
 
-test.run()
+await run()

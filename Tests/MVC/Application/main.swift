@@ -2,7 +2,7 @@ import Test
 @testable import HTTP
 @testable import MVC
 
-test.case("PartialUrl") {
+test("PartialUrl") {
     final class TestController: Controller, Inject {
         static func setup(router: MVC.Router<TestController>) throws {
             router.route(get: "/:name/id/:number", to: handler)
@@ -30,7 +30,7 @@ test.case("PartialUrl") {
     }
 }
 
-test.case("ConvenienceAPI") {
+test("ConvenienceAPI") {
     final class TestController: Controller, Inject {
         static func setup(router: MVC.Router<TestController>) throws {
             router.route(get: "/test", to: handler)
@@ -62,4 +62,4 @@ test.case("ConvenienceAPI") {
     }
 }
 
-test.run()
+await run()

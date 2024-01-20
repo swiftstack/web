@@ -58,7 +58,7 @@ final class TestController: Controller, InjectService {
     }
 }
 
-test.case("Middleware") {
+test("Middleware") {
     try Services.shared.register(
         transient: TestAuthorization.self,
         as: AuthorizationProtocol.self)
@@ -87,4 +87,4 @@ test.case("Middleware") {
     expect(try await adminResponse3.readBody(as: UTF8.self) == "admin")
 }
 
-test.run()
+await run()

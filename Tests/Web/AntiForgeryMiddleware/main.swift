@@ -37,7 +37,7 @@ func makeApplication() throws -> Application {
     return application
 }
 
-test.case("Token") {
+test("Token") {
     let application = try makeApplication()
     let request = Request(url: "/", method: .get)
     let response = try await application.process(request)
@@ -46,7 +46,7 @@ test.case("Token") {
     expect(try await response.readBody(as: UTF8.self) != "error")
 }
 
-test.case("PostWithoutTokens") {
+test("PostWithoutTokens") {
     let application = try makeApplication()
     let request = Request(url: "/", method: .post)
     let response = try await application.process(request)
@@ -54,7 +54,7 @@ test.case("PostWithoutTokens") {
     expect(try await response.readBody(as: UTF8.self).isEmpty)
 }
 
-test.case("PostWithSingleToken") {
+test("PostWithSingleToken") {
     let application = try makeApplication()
 
     let initialResponse = try await application.process(
@@ -68,7 +68,7 @@ test.case("PostWithSingleToken") {
     expect(try await response.readBody(as: UTF8.self).isEmpty)
 }
 
-test.case("PostWithTokens") {
+test("PostWithTokens") {
     let application = try makeApplication()
 
     let initialResponse = try await application.process(
@@ -82,4 +82,4 @@ test.case("PostWithTokens") {
     expect(try await response.readBody(as: UTF8.self) == "post ok")
 }
 
-test.run()
+await run()

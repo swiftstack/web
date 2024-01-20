@@ -2,7 +2,7 @@ import Test
 @testable import MVC
 @testable import Web
 
-test.case("Middleware") {
+test("Middleware") {
     final class TestController: Controller, InjectService {
         static var middleware: [MVC.Middleware.Type] {
             return [CookiesMiddleware.self]
@@ -57,4 +57,4 @@ test.case("Middleware") {
     }
 }
 
-test.run()
+await run()
