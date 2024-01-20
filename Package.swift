@@ -26,16 +26,27 @@ let package = Package(
                 .target(name: "MVC"),
                 .product(name: "FileSystem", package: "filesystem"),
                 .product(name: "Log", package: "log"),
-            ]),
+            ],
+            swiftSettings: swift6),
         .target(
             name: "MVC",
             dependencies: [
                 .product(name: "HTTP", package: "http"),
                 .product(name: "SHA1", package: "Crypto"),
                 .product(name: "UUID", package: "Crypto"),
-            ]),
+            ],
+            swiftSettings: swift6),
     ]
 )
+
+let swift6: [SwiftSetting] = [
+    .enableUpcomingFeature("ConciseMagicFile"),
+    .enableUpcomingFeature("ForwardTrailingClosures"),
+    .enableUpcomingFeature("ExistentialAny"),
+    .enableUpcomingFeature("StrictConcurrency"),
+    .enableUpcomingFeature("ImplicitOpenExistentials"),
+    .enableUpcomingFeature("BareSlashRegexLiterals"),
+]
 
 // MARK: - tests
 
@@ -64,7 +75,8 @@ func addTest(target: String, name: String) {
                 .target(name: target),
                 .product(name: "Test", package: "test"),
             ],
-            path: "Tests/\(target)/\(name)"))
+            path: "Tests/\(target)/\(name)",
+            swiftSettings: swift6))
 }
 
 // MARK: - custom package source

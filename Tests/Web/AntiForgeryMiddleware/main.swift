@@ -27,7 +27,7 @@ final class TestController: Controller, InjectService {
 func makeApplication() throws -> Application {
     try Services.shared.register(
         singleton: InMemoryCookiesStorage.self,
-        as: CookiesStorage.self)
+        as: (any CookiesStorage).self)
 
     let application = Application(middleware: [
         CookiesMiddleware.self,

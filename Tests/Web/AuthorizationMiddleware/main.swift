@@ -34,7 +34,7 @@ struct TestAuthorization: AuthorizationProtocol, Inject {
 }
 
 final class TestController: Controller, InjectService {
-    static var middleware: [MVC.Middleware.Type] {
+    static var middleware: [any MVC.Middleware.Type] {
         return [AuthorizationMiddleware.self]
     }
 
@@ -61,7 +61,7 @@ final class TestController: Controller, InjectService {
 test("Middleware") {
     try Services.shared.register(
         transient: TestAuthorization.self,
-        as: AuthorizationProtocol.self)
+        as: (any AuthorizationProtocol).self)
 
     let application = Application()
     try application.addController(TestController.self)

@@ -15,7 +15,7 @@ test("Middleware") {
     }
 
     final class TestController: Controller, InjectService {
-        static var middleware: [MVC.Middleware.Type] {
+        static var middleware: [any MVC.Middleware.Type] {
             return [TestMiddleware.self]
         }
 
@@ -72,7 +72,7 @@ test("MiddlewareOrder") {
     }
 
     final class TestController: Controller, InjectService {
-        static var middleware: [MVC.Middleware.Type] {
+        static var middleware: [any MVC.Middleware.Type] {
             return [FirstMiddleware.self, SecondMiddleware.self]
         }
 

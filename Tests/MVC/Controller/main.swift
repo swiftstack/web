@@ -53,9 +53,9 @@ test("InjectService") {
             router.route(get: "/", to: fetch)
         }
 
-        let serviceOne: ServiceOne
+        let serviceOne: any ServiceOne
 
-        init(_ serviceOne: ServiceOne) {
+        init(_ serviceOne: any ServiceOne) {
             self.serviceOne = serviceOne
         }
 
@@ -67,7 +67,7 @@ test("InjectService") {
     await scope {
         try Services.shared.register(
             transient: TestServiceOne.self,
-            as: ServiceOne.self)
+            as: (any ServiceOne).self)
 
         let application = Application()
         try application.addController(TestController.self)
@@ -84,10 +84,10 @@ test("Inject2Services") {
             router.route(get: "/", to: fetch)
         }
 
-        let serviceOne: ServiceOne
-        let serviceTwo: ServiceTwo
+        let serviceOne: any ServiceOne
+        let serviceTwo: any ServiceTwo
 
-        init(_ serviceOne: ServiceOne, _ serviceTwo: ServiceTwo) {
+        init(_ serviceOne: any ServiceOne, _ serviceTwo: any ServiceTwo) {
             self.serviceOne = serviceOne
             self.serviceTwo = serviceTwo
         }
@@ -103,10 +103,10 @@ test("Inject2Services") {
     await scope {
         try Services.shared.register(
             transient: TestServiceOne.self,
-            as: ServiceOne.self)
+            as: (any ServiceOne).self)
         try Services.shared.register(
             transient: TestServiceTwo.self,
-            as: ServiceTwo.self)
+            as: (any ServiceTwo).self)
 
         let application = Application()
         try application.addController(TestController.self)
@@ -123,14 +123,14 @@ test("Inject3Services") {
             router.route(get: "/", to: fetch)
         }
 
-        let serviceOne: ServiceOne
-        let serviceTwo: ServiceTwo
-        let serviceThree: ServiceThree
+        let serviceOne: any ServiceOne
+        let serviceTwo: any ServiceTwo
+        let serviceThree: any ServiceThree
 
         init(
-            _ serviceOne: ServiceOne,
-            _ serviceTwo: ServiceTwo,
-            _ serviceThree: ServiceThree
+            _ serviceOne: any ServiceOne,
+            _ serviceTwo: any ServiceTwo,
+            _ serviceThree: any ServiceThree
         ) {
             self.serviceOne = serviceOne
             self.serviceTwo = serviceTwo
@@ -149,13 +149,13 @@ test("Inject3Services") {
     await scope {
         try Services.shared.register(
             transient: TestServiceOne.self,
-            as: ServiceOne.self)
+            as: (any ServiceOne).self)
         try Services.shared.register(
             transient: TestServiceTwo.self,
-            as: ServiceTwo.self)
+            as: (any ServiceTwo).self)
         try Services.shared.register(
             transient: TestServiceThree.self,
-            as: ServiceThree.self)
+            as: (any ServiceThree).self)
 
         let application = Application()
         try application.addController(TestController.self)
@@ -172,16 +172,16 @@ test("Inject4Services") {
             router.route(get: "/", to: fetch)
         }
 
-        let serviceOne: ServiceOne
-        let serviceTwo: ServiceTwo
-        let serviceThree: ServiceThree
-        let serviceFour: ServiceFour
+        let serviceOne: any ServiceOne
+        let serviceTwo: any ServiceTwo
+        let serviceThree: any ServiceThree
+        let serviceFour: any ServiceFour
 
         init(
-            _ serviceOne: ServiceOne,
-            _ serviceTwo: ServiceTwo,
-            _ serviceThree: ServiceThree,
-            _ serviceFour: ServiceFour
+            _ serviceOne: any ServiceOne,
+            _ serviceTwo: any ServiceTwo,
+            _ serviceThree: any ServiceThree,
+            _ serviceFour: any ServiceFour
         ) {
             self.serviceOne = serviceOne
             self.serviceTwo = serviceTwo
@@ -202,16 +202,16 @@ test("Inject4Services") {
     await scope {
         try Services.shared.register(
             transient: TestServiceOne.self,
-            as: ServiceOne.self)
+            as: (any ServiceOne).self)
         try Services.shared.register(
             transient: TestServiceTwo.self,
-            as: ServiceTwo.self)
+            as: (any ServiceTwo).self)
         try Services.shared.register(
             transient: TestServiceThree.self,
-            as: ServiceThree.self)
+            as: (any ServiceThree).self)
         try Services.shared.register(
             transient: TestServiceFour.self,
-            as: ServiceFour.self)
+            as: (any ServiceFour).self)
 
         let application = Application()
         try application.addController(TestController.self)
@@ -228,18 +228,18 @@ test("Inject5Services") {
             router.route(get: "/", to: fetch)
         }
 
-        let serviceOne: ServiceOne
-        let serviceTwo: ServiceTwo
-        let serviceThree: ServiceThree
-        let serviceFour: ServiceFour
-        let serviceFive: ServiceFive
+        let serviceOne: any ServiceOne
+        let serviceTwo: any ServiceTwo
+        let serviceThree: any ServiceThree
+        let serviceFour: any ServiceFour
+        let serviceFive: any ServiceFive
 
         init(
-            _ serviceOne: ServiceOne,
-            _ serviceTwo: ServiceTwo,
-            _ serviceThree: ServiceThree,
-            _ serviceFour: ServiceFour,
-            _ serviceFive: ServiceFive
+            _ serviceOne: any ServiceOne,
+            _ serviceTwo: any ServiceTwo,
+            _ serviceThree: any ServiceThree,
+            _ serviceFour: any ServiceFour,
+            _ serviceFive: any ServiceFive
         ) {
             self.serviceOne = serviceOne
             self.serviceTwo = serviceTwo
@@ -262,19 +262,19 @@ test("Inject5Services") {
     await scope {
         try Services.shared.register(
             transient: TestServiceOne.self,
-            as: ServiceOne.self)
+            as: (any ServiceOne).self)
         try Services.shared.register(
             transient: TestServiceTwo.self,
-            as: ServiceTwo.self)
+            as: (any ServiceTwo).self)
         try Services.shared.register(
             transient: TestServiceThree.self,
-            as: ServiceThree.self)
+            as: (any ServiceThree).self)
         try Services.shared.register(
             transient: TestServiceFour.self,
-            as: ServiceFour.self)
+            as: (any ServiceFour).self)
         try Services.shared.register(
             transient: TestServiceFive.self,
-            as: ServiceFive.self)
+            as: (any ServiceFive).self)
 
         let application = Application()
         try application.addController(TestController.self)
@@ -291,20 +291,20 @@ test("Inject6Services") {
             router.route(get: "/", to: fetch)
         }
 
-        let serviceOne: ServiceOne
-        let serviceTwo: ServiceTwo
-        let serviceThree: ServiceThree
-        let serviceFour: ServiceFour
-        let serviceFive: ServiceFive
-        let serviceSix: ServiceSix
+        let serviceOne: any ServiceOne
+        let serviceTwo: any ServiceTwo
+        let serviceThree: any ServiceThree
+        let serviceFour: any ServiceFour
+        let serviceFive: any ServiceFive
+        let serviceSix: any ServiceSix
 
         init(
-            _ serviceOne: ServiceOne,
-            _ serviceTwo: ServiceTwo,
-            _ serviceThree: ServiceThree,
-            _ serviceFour: ServiceFour,
-            _ serviceFive: ServiceFive,
-            _ serviceSix: ServiceSix
+            _ serviceOne: any ServiceOne,
+            _ serviceTwo: any ServiceTwo,
+            _ serviceThree: any ServiceThree,
+            _ serviceFour: any ServiceFour,
+            _ serviceFive: any ServiceFive,
+            _ serviceSix: any ServiceSix
         ) {
             self.serviceOne = serviceOne
             self.serviceTwo = serviceTwo
@@ -329,22 +329,22 @@ test("Inject6Services") {
     await scope {
         try Services.shared.register(
             transient: TestServiceOne.self,
-            as: ServiceOne.self)
+            as: (any ServiceOne).self)
         try Services.shared.register(
             transient: TestServiceTwo.self,
-            as: ServiceTwo.self)
+            as: (any ServiceTwo).self)
         try Services.shared.register(
             transient: TestServiceThree.self,
-            as: ServiceThree.self)
+            as: (any ServiceThree).self)
         try Services.shared.register(
             transient: TestServiceFour.self,
-            as: ServiceFour.self)
+            as: (any ServiceFour).self)
         try Services.shared.register(
             transient: TestServiceFive.self,
-            as: ServiceFive.self)
+            as: (any ServiceFive).self)
         try Services.shared.register(
             transient: TestServiceSix.self,
-            as: ServiceSix.self)
+            as: (any ServiceSix).self)
 
         let application = Application()
         try application.addController(TestController.self)
@@ -391,9 +391,9 @@ test("InjectContextService") {
         }
 
         let context: Context
-        let serviceOne: ServiceOne
+        let serviceOne: any ServiceOne
 
-        init(_ context: Context, _ serviceOne: ServiceOne) {
+        init(_ context: Context, _ serviceOne: any ServiceOne) {
             self.context = context
             self.serviceOne = serviceOne
         }
@@ -407,7 +407,7 @@ test("InjectContextService") {
     await scope {
         try Services.shared.register(
             transient: TestServiceOne.self,
-            as: ServiceOne.self)
+            as: (any ServiceOne).self)
 
         let application = Application()
         try application.addController(TestController.self)
