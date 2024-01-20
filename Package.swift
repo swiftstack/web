@@ -22,13 +22,18 @@ let package = Package(
     targets: [
         .target(
             name: "Web",
-            dependencies: ["MVC", "FileSystem", "Log"]),
+            dependencies: [
+                .target(name: "MVC"),
+                .product(name: "FileSystem", package: "filesystem"),
+                .product(name: "Log", package: "log"),
+            ]),
         .target(
             name: "MVC",
             dependencies: [
-                "HTTP", 
-                .product(name: "SHA1", package: "Crypto"), 
-                .product(name: "UUID", package: "Crypto")]),
+                .product(name: "HTTP", package: "http"),
+                .product(name: "SHA1", package: "Crypto"),
+                .product(name: "UUID", package: "Crypto"),
+            ]),
     ]
 )
 
@@ -55,7 +60,10 @@ func addTest(target: String, name: String) {
     package.targets.append(
         .executableTarget(
             name: "Tests/\(target)/\(name)",
-            dependencies: [.init(stringLiteral: target), "Test"],
+            dependencies: [
+                .target(name: target),
+                .product(name: "Test", package: "test"),
+            ],
             path: "Tests/\(target)/\(name)"))
 }
 
@@ -101,6 +109,6 @@ extension Package.Dependency {
     static func package(name: String, source: Source) -> Package.Dependency {
         return source == .local
             ? .package(name: name, path: source.url(for: name))
-            : .package(name: name, url: source.url(for: name), .branch("dev"))
+            : .package(url: source.url(for: name), branch: "dev")
     }
 }
